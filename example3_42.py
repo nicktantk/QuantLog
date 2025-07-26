@@ -17,6 +17,6 @@ df.set_index('Date', inplace=True)
 df.sort_index(inplace=True)
 dailyret = df[['Close_IGE', 'Close_SPY']].pct_change()
 dailyret.rename(columns={"Close_IGE": "IGE", "Close_SPY": "SPY"}, inplace=True)
-netRet = (dailyret['IGE'] - dailyret['SPY']) / 2
+netRet = (dailyret['IGE'] + dailyret['SPY']) / 2
 sharpeRatio = np.sqrt(252) * np.mean(netRet) / np.std(netRet)
 print(sharpeRatio)
