@@ -31,4 +31,5 @@ Use pip to install all packages:
 ```
 pip install -r requirements.txt
 ```
----
+## Additional tips
+Most files require specific finance data pre extracted into excel files. Look at 01_yfToExcel.py to configure excels.
