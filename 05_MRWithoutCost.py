@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_excel('./excels/SPY.xlsx')
 df.sort_values('Date', inplace=True)
@@ -28,13 +29,8 @@ df['short_exit'] = 0
 df.loc[df['zscore'] >= 0, 'long_exit'] = 1     # Clear all longs when zscore >= 0
 df.loc[df['zscore'] <= 0, 'short_exit'] = 1    # Clear all shorts when zscore <= 0
 
-# Cumulative sums of long and short entries (incremental additions)
-df['long_pos'] = df['long_entry'].cumsum()
-df['short_pos'] = df['short_entry'].cumsum()
-
-# Apply resets to long positions on long exits
-long_exit_indices = df.index[df['long_exit'] == 1]
-df.loc[long_exit_indices, 'long_pos'] = 0
+df['long_pos'] = 0
+df['short_pos'] = 0
 
 # To propagate the reset effect forward in time for longs:
 for i in range(1, len(df)):
@@ -44,10 +40,6 @@ for i in range(1, len(df)):
         # If no exit today, position is previous day's position plus today's entry
         if i > 0:
             df.at[df.index[i], 'long_pos'] = df.at[df.index[i-1], 'long_pos'] + df['long_entry'].iloc[i]
-
-# Apply resets to short positions on short exits
-short_exit_indices = df.index[df['short_exit'] == 1]
-df.loc[short_exit_indices, 'short_pos'] = 0
 
 # Propagate the reset effect forward in time for shorts:
 for i in range(1, len(df)):
@@ -72,5 +64,8 @@ sharpe = annual_factor * df['strategy_return'].mean() / df['strategy_return'].st
 print("Sharpe Ratio:", sharpe)
 
 # Check the signals and positions
-print(df[['returns', 'zscore', 'long_entry', 'short_entry', 'long_exit', 'short_exit',
-          'long_pos', 'short_pos', 'net_position', 'net_position_lagged', 'strategy_return']].tail(20))
+print(df[['long_entry', 'short_entry', 'long_exit', 'short_exit',
+          'long_pos', 'short_pos', 'net_position', 'net_position_lagged', 'strategy_return']].tail(10))
+
+plt.plot(df['strategy_return'].cumsum())
+plt.show()
