@@ -4,3 +4,4 @@ matplotlib
 yfinance
 openpyxl
 statsmodels
+scikit-learn
