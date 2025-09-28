@@ -22,18 +22,5 @@ def calculateMaxDD(cumret):
     maxDDD = np.max(drawdownduration)
     return maxDD, maxDDD, i
 
-# Calculating daily net returns
-df = pd.read_excel('./excels/SPY.xlsx')
-df.sort_values(by='Date', inplace=True)
-netRet = df['Close'].pct_change()
-
-# Calculating the maxDD and maxDDD
-cumret = np.cumprod(1+netRet) - 1
-plt.plot(cumret)
-plt.show()
-maxDD, maxDDD, startDDDay = calculateMaxDD(cumret.values)
-print("maxDD:", maxDD)
-print("maxDDD:", maxDDD)
-print("Start of DD:", startDDDay)
 
         
