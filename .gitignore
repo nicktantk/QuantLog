@@ -1,2 +1,5 @@
 .venv/
 .env
+*.png
+__pycache__/
+.vscode/

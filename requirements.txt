@@ -1,7 +1,7 @@
+ipykernel
+jupyter
+yfinance
 pandas
 numpy
 matplotlib
-yfinance
-openpyxl
-statsmodels
 scikit-learn
